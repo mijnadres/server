@@ -4,7 +4,7 @@ extern crate mount;
 
 use std::path::Path;
 
-use iron::Iron;
+use iron::{Iron, Chain};
 use staticfile::Static;
 use mount::Mount;
 
@@ -13,5 +13,7 @@ fn main() {
 
     mount.mount("/", Static::new(Path::new("client/")));
 
-    Iron::new(mount).http("localhost:3000").unwrap();
+    let chain = Chain::new(mount);
+
+    Iron::new(chain).http("localhost:3000").unwrap();
 }
