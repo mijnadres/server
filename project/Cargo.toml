@@ -13,3 +13,6 @@ version = "*"
 
 [dependencies.mount]
 git = "https://github.com/iron/mount.git"
+
+[dependencies.logger]
+git = "https://github.com/iron/logger.git"
