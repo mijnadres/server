@@ -1,3 +1,5 @@
+pub mod routes;
+
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Event {
     origin: String,

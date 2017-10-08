@@ -4,6 +4,7 @@ extern crate iron;
 extern crate staticfile;
 extern crate mount;
 extern crate logger;
+extern crate mijnadres_server as adr;
 
 use std::path::Path;
 
@@ -39,6 +40,7 @@ fn mount() -> Mount {
     let mut mount = Mount::new();
 
     mount.mount("/", Static::new(Path::new("client/")));
+    mount.mount("/api", adr::api::routes::router());
 
     mount
 }
