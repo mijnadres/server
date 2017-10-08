@@ -1,4 +1,5 @@
 use iron::{Request, Response, IronResult, IronError, status};
+use iron::headers::ContentType;
 use router::Router;
 use serde_json;
 
@@ -15,7 +16,11 @@ fn handler(_: &mut Request) -> IronResult<Response> {
     let event = Event::new("mijnadres", "Hello, World");
 
     match serde_json::to_string(&event) {
-        Ok(message) => Ok(Response::with((status::Ok, message))),
+        Ok(message) => {
+            let mut response = Response::with((status::Ok, message));
+            response.headers.set(ContentType::json());
+            Ok(response)
+        },
 
         Err(e) => Err(IronError::new(e, status::InternalServerError)),
     }
