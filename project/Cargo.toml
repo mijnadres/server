@@ -7,6 +7,9 @@ authors = ["Daan van Berkel <daan.v.berkel.1980@gmail.com>"]
 log = "0.3.8"
 simplelog = "0.4.2"
 staticfile = "*"
+serde = "1.0.15"
+serde_json = "1.0.3"
+serde_derive = "1.0.15"
 
 [dependencies.iron]
 version = "*"
