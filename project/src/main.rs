@@ -3,6 +3,7 @@ extern crate simplelog;
 extern crate iron;
 extern crate staticfile;
 extern crate mount;
+extern crate logger;
 
 use std::path::Path;
 
@@ -10,6 +11,7 @@ use iron::{Iron, Chain};
 use staticfile::Static;
 use mount::Mount;
 use simplelog::{Config, LogLevelFilter, TermLogger, CombinedLogger};
+use logger::Logger;
 
 fn main() {
     CombinedLogger::init(
@@ -20,11 +22,23 @@ fn main() {
 
     info!("Logger configured");
 
+    Iron::new(chain()).http("localhost:3000").unwrap();
+}
+
+fn chain() -> Chain {
+    let mut chain = Chain::new(mount());
+    let (logger_before, logger_after) = Logger::new(None);
+    chain.link_before(logger_before);
+    // Other middelware goes here
+    chain.link_after(logger_after);
+
+    chain
+}
+
+fn mount() -> Mount {
     let mut mount = Mount::new();
 
     mount.mount("/", Static::new(Path::new("client/")));
 
-    let chain = Chain::new(mount);
-
-    Iron::new(chain).http("localhost:3000").unwrap();
+    mount
 }
