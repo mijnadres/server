@@ -9,8 +9,7 @@ use std::env;
 
 use adr::api::Event;
 
-
-pub fn establish_connection() -> PgConnection {
+fn establish_connection() -> PgConnection {
     dotenv().ok();
 
     let database_url = env::var("DATABASE_URL")
@@ -31,4 +30,5 @@ fn main() {
     println!("Displaying {} events", results.len());
     for event in results {
         println!("{:?}", event);
-    }}
+    }
+}
