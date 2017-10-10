@@ -1,7 +1,8 @@
 pub mod routes;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Queryable)]
 pub struct Event {
+    id: i32,
     origin: String,
     message: String,
 }
@@ -9,6 +10,7 @@ pub struct Event {
 impl Event {
     pub fn new(origin: &str, message: &str) -> Event {
         Event {
+            id: 0,
             origin: origin.to_string(),
             message: message.to_string(),
         }
