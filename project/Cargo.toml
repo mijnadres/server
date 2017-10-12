@@ -24,6 +24,9 @@ version = "*"
 [dependencies.router]
 version = "*"
 
+[dependencies.persistent]
+version = "*"
+
 [dependencies.mount]
 git = "https://github.com/iron/mount.git"
 
