@@ -10,6 +10,10 @@ extern crate serde_json;
 
 extern crate iron;
 extern crate router;
+extern crate persistent;
+extern crate r2d2;
+extern crate r2d2_diesel;
 
 pub mod api;
 pub mod schema;
+pub mod database;
