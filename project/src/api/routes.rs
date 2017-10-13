@@ -22,6 +22,7 @@ fn handler(request: &mut Request) -> IronResult<Response> {
     let connection = arc.get().unwrap();
 
     let past_events: Vec<Event> = events
+        .order(id.desc())
         .limit(5)
         .load::<Event>(&*connection)
         .expect("Error loading past events");
