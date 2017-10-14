@@ -6,7 +6,7 @@ use serde_json;
 use diesel::prelude::*;
 use super::super::database::ConnectionPool;
 
-use super::Event;
+use super::ContactRecord;
 
 pub fn router() -> Router {
     let mut router = Router::new();
@@ -16,18 +16,18 @@ pub fn router() -> Router {
 }
 
 fn handler(request: &mut Request) -> IronResult<Response> {
-    use super::super::schema::events::dsl::*;
+    use super::super::schema::contactrecords::dsl::*;
 
     let arc = request.get::<Read<ConnectionPool>>().unwrap();
     let connection = arc.get().unwrap();
 
-    let past_events: Vec<Event> = events
+    let past_events: Vec<ContactRecord> = contactrecords
         .order(id.desc())
         .limit(5)
-        .load::<Event>(&*connection)
+        .load::<ContactRecord>(&*connection)
         .expect("Error loading past events");
 
-    let default_event = Event::new("default", "default");
+    let default_event = ContactRecord::new("default", "default");
     let event = past_events.first().unwrap_or(&default_event);
 
     match serde_json::to_string(&event) {

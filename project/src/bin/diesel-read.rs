@@ -7,7 +7,7 @@ use diesel::pg::PgConnection;
 use dotenv::dotenv;
 use std::env;
 
-use adr::api::Event;
+use adr::api::ContactRecord;
 
 fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -19,16 +19,16 @@ fn establish_connection() -> PgConnection {
 }
 
 fn main() {
-    use adr::schema::events::dsl::*;
+    use adr::schema::contactrecords::dsl::*;
 
     let connection = establish_connection();
-    let results = events
+    let results = contactrecords
         .limit(5)
-        .load::<Event>(&connection)
+        .load::<ContactRecord>(&connection)
         .expect("Error loading events");
 
-    println!("Displaying {} events", results.len());
-    for event in results {
-        println!("{:?}", event);
+    println!("Displaying {} contact records", results.len());
+    for contactrecord in results {
+        println!("{:?}", contactrecord);
     }
 }

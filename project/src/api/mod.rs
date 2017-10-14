@@ -1,18 +1,18 @@
 pub mod routes;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Queryable)]
-pub struct Event {
+pub struct ContactRecord {
     id: i32,
-    origin: String,
-    message: String,
+    name: String,
+    phone: String,
 }
 
-impl Event {
-    pub fn new(origin: &str, message: &str) -> Event {
-        Event {
+impl ContactRecord {
+    pub fn new(name: &str, phone: &str) -> ContactRecord {
+        ContactRecord {
             id: 0,
-            origin: origin.to_string(),
-            message: message.to_string(),
+            name: name.to_string(),
+            phone: phone.to_string(),
         }
     }
 }
@@ -24,7 +24,7 @@ mod tests {
 
     #[test]
     fn should_be_able_to_serialize_to_json() {
-        let original = Event::new("test", "Hello, World!");
+        let original = ContactRecord::new("test", "Hello, World!");
 
         let serialized = serde_json::to_string(&original).unwrap();
         let deserialized = serde_json::from_str(&serialized).unwrap();

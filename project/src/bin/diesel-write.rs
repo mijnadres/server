@@ -11,14 +11,14 @@ use dotenv::dotenv;
 use std::env;
 use std::io::{stdin, Read};
 
-use adr::api::Event;
-use adr::schema::events;
+use adr::api::ContactRecord;
+use adr::schema::contactrecords;
 
 #[derive(Insertable)]
-#[table_name="events"]
-struct FreshEvent {
-    origin: String,
-    message: String,
+#[table_name="contactrecords"]
+struct FreshContactRecord {
+    name: String,
+    phone: String,
 }
 
 fn establish_connection() -> PgConnection {
@@ -30,10 +30,10 @@ fn establish_connection() -> PgConnection {
         .expect(&format!("Error connecting to {}", database_url))
 }
 
-fn store_event(conn: &PgConnection, fresh_event: &FreshEvent) -> Event {
-    use adr::schema::events;
+fn store_event(conn: &PgConnection, fresh_contact_record: &FreshContactRecord) -> ContactRecord {
+    use adr::schema::contactrecords;
 
-    diesel::insert(fresh_event).into(events::table)
+    diesel::insert(fresh_contact_record).into(contactrecords::table)
         .get_result(conn)
         .expect("Error saving new event")
 }
@@ -41,18 +41,19 @@ fn store_event(conn: &PgConnection, fresh_event: &FreshEvent) -> Event {
 fn main() {
     let connection = establish_connection();
 
-    println!("What would you like your origin to be?");
-    let mut origin = String::new();
-    stdin().read_line(&mut origin).unwrap();
-    let origin = &origin[..(origin.len() - 1)]; // Drop the newline character
-    println!("\nOk! Let's write from {} (Press {} when finished)\n", origin, EOF);
-    let mut message = String::new();
-    stdin().read_to_string(&mut message).unwrap();
+    println!("What would you like your name to be?");
+    let mut name = String::new();
+    stdin().read_line(&mut name).unwrap();
+    let name = &name[..(name.len() - 1)]; // Drop the newline character
+    println!("\nOk! What is {} phone number? (Press {} when finished)\n", name, EOF);
+    let mut phone = String::new();
+    stdin().read_to_string(&mut phone).unwrap();
+    let phone = &phone[..(phone.len() - 1)]; // Drop the newline character
 
-    let fresh_event = FreshEvent { origin: origin.to_string(), message: message.to_string() };
+    let fresh_contact_record = FreshContactRecord { name: name.to_string(), phone: phone.to_string() };
 
-    let event = store_event(&connection, &fresh_event);
-    println!("\nSaved event {:?}", event);
+    let contact_record = store_event(&connection, &fresh_contact_record);
+    println!("\nSaved contact record {:?}", contact_record);
 }
 
 #[cfg(not(windows))]
